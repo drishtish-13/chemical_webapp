@@ -4,6 +4,14 @@
   padding: 0;
   width: 100%;
   overflow-x: hidden;
+  background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 50%, #d1d5db 100%);
+  min-height: 100vh;
+  animation: fadeInBg 1s ease forwards;
+}
+
+@keyframes fadeInBg {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .edit-header {
@@ -15,29 +23,55 @@
   font-size: 2.25rem;
   font-weight: 700;
   margin: 0 0 8px 0;
-  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f56565 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  animation: slideInTop 0.7s ease forwards;
 }
 
 .edit-subtitle {
   font-size: 1.1rem;
-  color: #666;
+  color: #4a5568;
   margin: 0;
-  font-weight: 400;
+  font-weight: 500;
+  background: linear-gradient(135deg, #6b7280 0%, #a0aec0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  animation: slideInTop 0.7s ease 0.3s forwards;
+}
+
+@keyframes slideInTop {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .edit-card {
-  background: white;
+  background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
   border: 1px solid rgba(0, 0, 0, 0.05);
   overflow: hidden;
   margin: 24px;
   max-width: calc(100% - 48px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect only on compound name area */
+.edit-card:hover .edit-title,
+.edit-card:hover .form-row {
+  background: rgba(230, 245, 255, 0.3); /* very light blue */
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+/* Card hover overall shadow and lift */
+.edit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
 }
 
 .edit-form {
@@ -46,6 +80,7 @@
 
 .form-row {
   margin-bottom: 24px;
+  transition: all 0.3s ease;
 }
 
 .full-width {
@@ -68,26 +103,42 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f56565 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.button-group button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #a3bffa 0%, #c3dafe 50%, #dbeafe 100%);
 }
 
 .button-group button mat-icon {
   font-size: 18px;
   width: 18px;
   height: 18px;
+  color: #fff;
 }
 
 /* Form field enhancements */
 .mat-form-field {
   font-size: 16px;
+  transition: all 0.3s ease;
 }
 
 .mat-form-field-appearance-outline .mat-form-field-outline {
   border-radius: 12px;
   border-width: 2px;
+  border-color: #cbd5e0;
 }
 
 .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-  border-color: #4a5568;
+  border-color: #667eea;
+  box-shadow: 0 0 12px rgba(102, 126, 234, 0.4);
 }
 
 .mat-form-field-appearance-outline .mat-form-field-outline-start,
@@ -97,6 +148,7 @@
 
 .mat-form-field.mat-form-field-invalid .mat-form-field-outline-thick {
   border-color: #e53e3e;
+  box-shadow: 0 0 10px rgba(229, 62, 62, 0.3);
 }
 
 .mat-hint {
@@ -133,8 +185,6 @@
   
   .edit-title {
     font-size: 1.875rem;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
   }
   
   .edit-subtitle {
