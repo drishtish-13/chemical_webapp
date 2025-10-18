@@ -12,17 +12,29 @@ const nodemailer = require('nodemailer');
 const { Op } = require('sequelize'); // for expiry check
 
  function createTransporter() {
-  // Using SMTP from env: works with Gmail app password, SendGrid SMTP, etc.
+  // env fallback sensible defaults
+  const host = process.env.EMAIL_HOST || 'smtp.gmail.com';
+  const port = process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT, 10) : 465;
+  const secure = typeof process.env.EMAIL_SECURE !== 'undefined'
+    ? process.env.EMAIL_SECURE === 'true'
+    : (port === 465);
+
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    // still create, but will fail verify; we log later
+    console.warn('EMAIL_USER or EMAIL_PASS is not set in env; email sending will fail.');
+  }
+
   return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-    port: process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT) : 465,
-    secure: process.env.EMAIL_SECURE ? process.env.EMAIL_SECURE === 'true' : true,
+    host,
+    port,
+    secure,
     auth: {
       user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
+      pass: process.env.EMAIL_PASS
+    }
   });
 }
+
 exports.signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -107,22 +119,35 @@ exports.forgotPassword = async (req, res) => {
     if (!email) return res.status(400).json({ message: 'Email is required' });
 
     const user = await User.findOne({ where: { email } });
+    // always respond with the same message to avoid leaking user existence
+    const genericMsg = 'If that email is registered, you will receive a password reset link.';
+
     if (!user) {
-      // Do not reveal whether email exists to avoid leaking registered emails.
-      return res.json({ message: 'If that email is registered, you will receive a password reset link.' });
+      // do not reveal existence
+      return res.json({ message: genericMsg });
     }
 
-    // Generate secure token
+    // generate token (hex)
     const token = crypto.randomBytes(32).toString('hex');
 
-    // Save token and expiry (1 hour)
+    // Save token + expiry on user
     user.resetPasswordToken = token;
     user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
     await user.save();
 
+    // build reset link using frontend url
     const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:4200'}/reset-password/${token}`;
 
     const transporter = createTransporter();
+
+    // verify transporter connectivity/auth before attempting send
+    try {
+      await transporter.verify();
+    } catch (verifyErr) {
+      console.error('Nodemailer verify failed:', verifyErr && verifyErr.message ? verifyErr.message : verifyErr);
+      // For safety: don't delete token, but inform admin-level error
+      return res.status(500).json({ message: 'Email service not available. Please try again later.' });
+    }
 
     const mailOptions = {
       from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
@@ -130,21 +155,25 @@ exports.forgotPassword = async (req, res) => {
       subject: 'Password Reset Request',
       html: `
         <p>You requested a password reset.</p>
-        <p>Click the link below to reset your password. This link is valid for 1 hour.</p>
+        <p>Click the link below to reset your password (valid 1 hour):</p>
         <p><a href="${resetUrl}">${resetUrl}</a></p>
         <p>If you did not request this, please ignore this email.</p>
       `
     };
 
-    await transporter.sendMail(mailOptions);
-
-    return res.json({ message: 'If that email is registered, you will receive a password reset link.' });
+    try {
+      await transporter.sendMail(mailOptions);
+      return res.json({ message: genericMsg });
+    } catch (sendErr) {
+      console.error('sendMail error', sendErr && sendErr.message ? sendErr.message : sendErr);
+      // We don't want to leak token or user state to client; report generic message
+      return res.status(500).json({ message: 'Failed to send reset email. Please try again later.' });
+    }
   } catch (err) {
-    console.error('forgotPassword error', err);
-    return res.status(500).json({ message: 'Server error sending reset email' });
+    console.error('forgotPassword error', err && err.stack ? err.stack : err);
+    return res.status(500).json({ message: 'Server error' });
   }
 };
-
 // POST /api/auth/reset-password
 exports.resetPassword = async (req, res) => {
   try {

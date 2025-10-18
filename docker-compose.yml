@@ -1,0 +1,48 @@
+
+
+services:
+  backend:
+    build: ./backend
+    container_name: chemical_backend
+    ports:
+      - "4000:4000"
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: compounds_db
+      DB_USER: compound_user
+      DB_PASS: mypassword
+      DB_DIALECT: mysql
+      JWT_SECRET: 7ead7dddca862cf70bdd1627f0f41654698685be1ff83b119632c04b63d1dab4d691ea30b3d099de369573aa4435d32b00f3ae801ee0964d54144fe272f29f31
+      EMAIL_USER: drishtisharma3488@gmail.com
+      EMAIL_PASS: qwmh sajy flte xprr
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend-main
+    container_name: chemical_frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+  db:
+    image: mysql:8
+    container_name: chemical_db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: mypassword
+      MYSQL_DATABASE: compounds_db
+      MYSQL_USER: compound_user
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:

@@ -3,6 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+// import environment
+import { environment } from '../environments/environment';
+
+// use apiUrl
+const loginUrl = `${environment.apiUrl}/auth/login`;
+
 
 export interface User {
   id: number;
