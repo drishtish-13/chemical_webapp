@@ -1,0 +1,172 @@
+.edit-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.edit-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.edit-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.edit-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0;
+  font-weight: 400;
+}
+
+.edit-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  margin: 24px;
+  max-width: calc(100% - 48px);
+}
+
+.edit-form {
+  padding: 32px;
+}
+
+.form-row {
+  margin-bottom: 24px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.button-group button {
+  min-width: 140px;
+  height: 44px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.button-group button mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* Form field enhancements */
+.mat-form-field {
+  font-size: 16px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  border-radius: 12px;
+  border-width: 2px;
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  border-color: #4a5568;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-start,
+.mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-radius: 12px;
+}
+
+.mat-form-field.mat-form-field-invalid .mat-form-field-outline-thick {
+  border-color: #e53e3e;
+}
+
+.mat-hint {
+  color: #718096;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.mat-error {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  margin-top: 8px;
+  color: #e53e3e;
+}
+
+.error-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .edit-container {
+    padding: 0;
+  }
+  
+  .edit-card {
+    margin: 16px;
+    max-width: calc(100% - 32px);
+  }
+  
+  .edit-title {
+    font-size: 1.875rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  .edit-subtitle {
+    font-size: 1rem;
+  }
+  
+  .edit-form {
+    padding: 24px;
+  }
+  
+  .button-group {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .button-group button {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-card {
+    margin: 12px;
+    max-width: calc(100% - 24px);
+  }
+  
+  .edit-title {
+    font-size: 1.5rem;
+  }
+  
+  .edit-form {
+    padding: 16px;
+  }
+}

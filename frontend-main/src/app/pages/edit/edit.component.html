@@ -1,0 +1,66 @@
+<div class="edit-container" *ngIf="!loading; else loadingTpl">
+  <div class="edit-header">
+    <h1 class="edit-title">Edit Compound</h1>
+    <p class="edit-subtitle">Update the compound information below</p>
+  </div>
+
+  <mat-card class="edit-card">
+    <form [formGroup]="form" (ngSubmit)="save()" class="edit-form">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width" [class.mat-form-field-invalid]="hasFieldError('name')">
+          <mat-label>Compound Name *</mat-label>
+          <input matInput formControlName="name" placeholder="Enter compound name (2-100 characters)" />
+          <mat-icon matSuffix>science</mat-icon>
+          <mat-error *ngIf="hasFieldError('name')">
+            <mat-icon class="error-icon">error</mat-icon>
+            {{ getFieldError('name') }}
+          </mat-error>
+          <mat-hint>Use letters, numbers, spaces, hyphens, and parentheses only</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width" [class.mat-form-field-invalid]="hasFieldError('image')">
+          <mat-label>Image URL *</mat-label>
+          <input matInput formControlName="image" placeholder="https://example.com/image.jpg" />
+          <mat-icon matSuffix>image</mat-icon>
+          <mat-error *ngIf="hasFieldError('image')">
+            <mat-icon class="error-icon">error</mat-icon>
+            {{ getFieldError('image') }}
+          </mat-error>
+          <mat-hint>Must be a valid URL ending with .jpg, .jpeg, .png, .gif, .svg, or .webp</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width" [class.mat-form-field-invalid]="hasFieldError('description')">
+          <mat-label>Description *</mat-label>
+          <textarea matInput formControlName="description" rows="4" placeholder="Enter compound description (10-1000 characters)"></textarea>
+          <mat-error *ngIf="hasFieldError('description')">
+            <mat-icon class="error-icon">error</mat-icon>
+            {{ getFieldError('description') }}
+          </mat-error>
+          <mat-hint>Provide a detailed description of the compound (10-1000 characters)</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="button-group">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
+          <mat-icon>save</mat-icon>
+          Save Changes
+        </button>
+        <button mat-button color="warn" type="button" (click)="cancel()">
+          <mat-icon>cancel</mat-icon>
+          Cancel
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading-container">
+    <mat-spinner diameter="48"></mat-spinner>
+    <p class="loading-text">Loading compound details...</p>
+  </div>
+</ng-template>

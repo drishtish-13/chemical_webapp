@@ -1,0 +1,18 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <mat-icon class="brand-icon">science</mat-icon>
+    <span class="brand-text">Chemical Compounds</span>
+  </div>
+
+  <div class="navbar-actions">
+    <div class="user-menu" *ngIf="currentUser">
+      <div class="user-info">
+        <mat-icon class="user-icon">person</mat-icon>
+        <span class="username">{{ currentUser.username }}</span>
+      </div>
+      <button mat-icon-button class="logout-button" (click)="logout()" matTooltip="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </div>
+</nav>

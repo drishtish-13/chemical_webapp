@@ -1,0 +1,45 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background-attachment: fixed;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+.page-content {
+  flex: 1;
+  padding: 32px;
+  background: transparent;
+  min-height: calc(100vh - 64px);
+  overflow-y: auto;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  margin-top: 64px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .page-content {
+    padding: 16px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-content {
+    padding: 12px;
+  }
+}
+
+/* Animation for page transitions */
+.page-content {
+  animation: fadeIn 0.3s ease-in-out;
+}

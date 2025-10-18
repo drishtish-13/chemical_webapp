@@ -1,0 +1,56 @@
+<div class="gallery-root">
+  <div class="gallery-header">
+    <h1 class="title">Compound Gallery</h1>
+    <p class="subtitle">Explore our collection of chemical compounds</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="48"></mat-spinner>
+    <p class="loading-text">Loading compounds...</p>
+  </div>
+
+  <div class="grid" *ngIf="!loading && compounds?.length">
+    <mat-card class="card" *ngFor="let c of compounds" (click)="viewDetails(c.id)" tabindex="0" role="button">
+      <div class="image-wrap">
+            <img [src]="c.image" [alt]="c.name" (error)="onImageError($event)" (load)="onImageLoad($event)" />
+        <div class="image-placeholder" *ngIf="!c.image || imageErrors[c.id]">
+          <mat-icon>image</mat-icon>
+          <span>No Image</span>
+        </div>
+      </div>
+      <mat-card-content>
+        <h3 class="name">{{ c.name }}</h3>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!loading && (!compounds || compounds.length === 0)" class="empty-state">
+    <mat-icon class="empty-icon">science</mat-icon>
+    <h3>No compounds found</h3>
+    <p>There are no compounds to display at the moment.</p>
+  </div>
+
+  <nav class="pager" *ngIf="totalPages > 1">
+    <button mat-icon-button (click)="first()" [disabled]="page === 1" aria-label="first page">
+      <mat-icon>first_page</mat-icon>
+    </button>
+
+    <button mat-icon-button (click)="prev()" [disabled]="page === 1" aria-label="previous page">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <ng-container *ngFor="let p of pageNumbers">
+      <button mat-button [color]="p === page ? 'primary' : null" (click)="goToPage(p)">{{ p }}</button>
+    </ng-container>
+
+    <button mat-icon-button (click)="next()" [disabled]="page === totalPages" aria-label="next page">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+
+    <button mat-icon-button (click)="last()" [disabled]="page === totalPages" aria-label="last page">
+      <mat-icon>last_page</mat-icon>
+    </button>
+
+    <div class="pager-info">Page {{ page }} of {{ totalPages }} • {{ total }} items</div>
+  </nav>
+</div>

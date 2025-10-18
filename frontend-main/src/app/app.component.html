@@ -1,0 +1,15 @@
+<div class="app-container">
+  <!-- Navbar -->
+  <app-navbar *ngIf="showNavbar"></app-navbar>
+  
+  <!-- Main content area -->
+  <div class="main-content">
+    <!-- Page content -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  
+  <!-- Global modal -->
+  <app-modal></app-modal>
+</div>

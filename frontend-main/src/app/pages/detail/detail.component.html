@@ -1,0 +1,57 @@
+<div *ngIf="!loading && compound" class="detail-container">
+  <div class="detail-header">
+    <h1 class="detail-title">{{ compound.name }}</h1>
+    <p class="detail-subtitle">Compound Details</p>
+  </div>
+
+  <mat-card class="detail-card">
+    <div class="image-section">
+      <div class="image-container">
+        <img [src]="compound.image" [alt]="compound.name" class="compound-image" (error)="onImageError($event)" (load)="onImageLoad($event)" />
+        <div class="image-placeholder" *ngIf="!compound.image || imageError">
+          <mat-icon>image</mat-icon>
+          <span>No Image Available</span>
+        </div>
+        <div class="image-overlay" *ngIf="!imageError">
+          <mat-icon class="overlay-icon">zoom_in</mat-icon>
+        </div>
+      </div>
+    </div>
+    
+    <div class="content-section">
+      <div class="compound-info">
+        <h2 class="compound-name">{{ compound.name }}</h2>
+        <div class="description-container">
+          <h3 class="description-title">Description</h3>
+          <p class="compound-description">{{ compound.description }}</p>
+        </div>
+      </div>
+      
+      <div class="action-section">
+        <button mat-raised-button color="primary" (click)="editCompound()" class="action-button">
+          <mat-icon>edit</mat-icon>
+          Edit Compound
+        </button>
+        <button mat-button color="warn" (click)="goBack()" class="action-button">
+          <mat-icon>arrow_back</mat-icon>
+          Back to Gallery
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<div *ngIf="loading" class="loading-container">
+  <mat-spinner diameter="48"></mat-spinner>
+  <p class="loading-text">Loading compound details...</p>
+</div>
+
+<div *ngIf="!loading && !compound" class="error-state">
+  <mat-icon class="error-icon">error</mat-icon>
+  <h3>Compound not found</h3>
+  <p>The requested compound could not be found.</p>
+  <button mat-raised-button color="primary" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    Back to Gallery
+  </button>
+</div>

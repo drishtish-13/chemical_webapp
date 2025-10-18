@@ -1,0 +1,34 @@
+<div class="modal-overlay" *ngIf="modalData" (click)="close()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-icon">
+        <mat-icon [style.color]="getIconColor()">{{ getIconClass() }}</mat-icon>
+      </div>
+      <h2 class="modal-title">{{ modalData?.title }}</h2>
+      <button mat-icon-button class="close-button" (click)="close()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <p class="modal-message">{{ modalData?.message }}</p>
+    </div>
+    
+    <div class="modal-footer">
+      <button 
+        mat-button 
+        class="cancel-button" 
+        (click)="cancel()"
+        *ngIf="modalData?.showCancel">
+        {{ modalData.cancelText || 'Cancel' }}
+      </button>
+      <button 
+        mat-raised-button 
+        [color]="modalData?.type === 'error' ? 'warn' : 'primary'"
+        class="confirm-button" 
+        (click)="confirm()">
+        {{ modalData.confirmText || 'OK' }}
+      </button>
+    </div>
+  </div>
+</div>
